@@ -1,0 +1,52 @@
+[
+  {
+    "village": "Mawsynram Valley Sector",
+    "district": "East Khasi Hills",
+    "population": 1337,
+    "risk_level": "severe",
+    "distance_km": 3.4,
+    "nearest_hospital": "Mawsynram Community Health Centre",
+    "priority_rank": 1,
+    "evacuation_status": "Immediate Evacuation Alert"
+  },
+  {
+    "village": "Cherrapunji (Sohra Rim)",
+    "district": "East Khasi Hills",
+    "population": 2450,
+    "risk_level": "high",
+    "distance_km": 5.8,
+    "nearest_hospital": "Sohra Community Health Centre",
+    "priority_rank": 2,
+    "evacuation_status": "Stage 2 Standby Alert"
+  },
+  {
+    "village": "Laitlyngkot Slope Dwellings",
+    "district": "East Khasi Hills",
+    "population": 1480,
+    "risk_level": "high",
+    "distance_km": 8.5,
+    "nearest_hospital": "Pynursla Community Health Centre",
+    "priority_rank": 3,
+    "evacuation_status": "Stage 1 Advisory"
+  },
+  {
+    "village": "Ialong Cut-Slope Hamlet",
+    "district": "West Jaintia Hills",
+    "population": 1820,
+    "risk_level": "moderate",
+    "distance_km": 4.2,
+    "nearest_hospital": "Jowai Civil Hospital (Ialong)",
+    "priority_rank": 4,
+    "evacuation_status": "Watch & Monitor"
+  },
+  {
+    "village": "Nongpoh Valley Corridor",
+    "district": "Ri-Bhoi",
+    "population": 17055,
+    "risk_level": "low",
+    "distance_km": 1.5,
+    "nearest_hospital": "Nongpoh District Civil Hospital",
+    "priority_rank": 5,
+    "evacuation_status": "Normal Operations"
+  }
+]

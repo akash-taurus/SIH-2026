@@ -1,0 +1,6 @@
+[
+  { "level": "Low", "count": 14, "percentage": 35, "color": "#EBEBEB" },
+  { "level": "Moderate", "count": 10, "percentage": 25, "color": "#AAAAAA" },
+  { "level": "High", "count": 12, "percentage": 30, "color": "#444444" },
+  { "level": "Severe", "count": 4, "percentage": 10, "color": "#000000" }
+]

@@ -1,0 +1,22 @@
+[
+  { "time": "Day 1 00:00", "rainfall": 8.2, "soilMoisture": 42.1, "threshold": 35.0 },
+  { "time": "Day 1 03:00", "rainfall": 14.5, "soilMoisture": 45.3, "threshold": 35.0 },
+  { "time": "Day 1 06:00", "rainfall": 29.8, "soilMoisture": 54.0, "threshold": 35.0 },
+  { "time": "Day 1 09:00", "rainfall": 48.0, "soilMoisture": 68.2, "threshold": 35.0 },
+  { "time": "Day 1 12:00", "rainfall": 62.4, "soilMoisture": 81.5, "threshold": 35.0 },
+  { "time": "Day 1 15:00", "rainfall": 35.1, "soilMoisture": 84.0, "threshold": 35.0 },
+  { "time": "Day 1 18:00", "rainfall": 21.0, "soilMoisture": 79.2, "threshold": 35.0 },
+  { "time": "Day 1 21:00", "rainfall": 12.0, "soilMoisture": 72.8, "threshold": 35.0 },
+  { "time": "Day 2 00:00", "rainfall": 15.6, "soilMoisture": 74.0, "threshold": 35.0 },
+  { "time": "Day 2 03:00", "rainfall": 32.4, "soilMoisture": 82.1, "threshold": 35.0 },
+  { "time": "Day 2 06:00", "rainfall": 55.2, "soilMoisture": 89.4, "threshold": 35.0 },
+  { "time": "Day 2 09:00", "rainfall": 68.0, "soilMoisture": 93.8, "threshold": 35.0 },
+  { "time": "Day 2 12:00", "rainfall": 42.0, "soilMoisture": 91.0, "threshold": 35.0 },
+  { "time": "Day 2 15:00", "rainfall": 24.5, "soilMoisture": 86.5, "threshold": 35.0 },
+  { "time": "Day 2 18:00", "rainfall": 18.0, "soilMoisture": 80.2, "threshold": 35.0 },
+  { "time": "Day 2 21:00", "rainfall": 9.5, "soilMoisture": 75.0, "threshold": 35.0 },
+  { "time": "Day 3 00:00", "rainfall": 7.0, "soilMoisture": 71.3, "threshold": 35.0 },
+  { "time": "Day 3 06:00", "rainfall": 11.2, "soilMoisture": 68.0, "threshold": 35.0 },
+  { "time": "Day 3 12:00", "rainfall": 19.8, "soilMoisture": 69.5, "threshold": 35.0 },
+  { "time": "Day 3 18:00", "rainfall": 6.4, "soilMoisture": 62.0, "threshold": 35.0 }
+]

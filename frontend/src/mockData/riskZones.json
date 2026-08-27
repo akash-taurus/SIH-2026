@@ -1,0 +1,161 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_id": "Z-SHL-01",
+        "name": "Shillong East Ridge & Upper Shillong",
+        "district": "East Khasi Hills",
+        "risk_level": "severe",
+        "probability": 0.88,
+        "mean_slope_deg": 38.4,
+        "rainfall_24h_mm": 142.5,
+        "critical_infrastructure": "NH-40 Expressway, NEIGRIHMS Link",
+        "soil_type": "Clayey Loam on Weathered Quartzite"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [91.865, 25.545],
+            [91.925, 25.548],
+            [91.938, 25.595],
+            [91.882, 25.602],
+            [91.865, 25.545]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_id": "Z-CHR-02",
+        "name": "Sohra (Cherrapunji) Plateau Escarpment",
+        "district": "East Khasi Hills",
+        "risk_level": "high",
+        "probability": 0.76,
+        "mean_slope_deg": 35.8,
+        "rainfall_24h_mm": 210.0,
+        "critical_infrastructure": "SH-5 Sohra-Shella Border Route",
+        "soil_type": "Limestone Karst & Fractured Sandstone"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [91.685, 25.245],
+            [91.758, 25.252],
+            [91.765, 25.315],
+            [91.678, 25.302],
+            [91.685, 25.245]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_id": "Z-MAW-03",
+        "name": "Mawsynram Valley Deep Canyons",
+        "district": "East Khasi Hills",
+        "risk_level": "severe",
+        "probability": 0.93,
+        "mean_slope_deg": 42.1,
+        "rainfall_24h_mm": 265.0,
+        "critical_infrastructure": "Mawsynram-Balat Link Road",
+        "soil_type": "Highly Saturated Colluvium"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [91.545, 25.265],
+            [91.622, 25.272],
+            [91.635, 25.335],
+            [91.538, 25.328],
+            [91.545, 25.265]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_id": "Z-JOW-04",
+        "name": "Jowai Cut-Slope Bypass Corridor",
+        "district": "West Jaintia Hills",
+        "risk_level": "moderate",
+        "probability": 0.54,
+        "mean_slope_deg": 27.2,
+        "rainfall_24h_mm": 88.0,
+        "critical_infrastructure": "NH-6 National Highway",
+        "soil_type": "Shale and Coal-bearing Sandstone"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [92.165, 25.405],
+            [92.245, 25.412],
+            [92.258, 25.475],
+            [92.158, 25.468],
+            [92.165, 25.405]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_id": "Z-NONG-05",
+        "name": "Nongpoh Lowland Corridor",
+        "district": "Ri-Bhoi",
+        "risk_level": "low",
+        "probability": 0.19,
+        "mean_slope_deg": 14.2,
+        "rainfall_24h_mm": 42.0,
+        "critical_infrastructure": "GS Road Highway Sector",
+        "soil_type": "Alluvial Valley Fill"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [91.835, 25.865],
+            [91.925, 25.872],
+            [91.938, 25.935],
+            [91.828, 25.928],
+            [91.835, 25.865]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_id": "Z-TURA-06",
+        "name": "Tura Peak Forest Slope",
+        "district": "West Garo Hills",
+        "risk_level": "moderate",
+        "probability": 0.48,
+        "mean_slope_deg": 31.5,
+        "rainfall_24h_mm": 95.0,
+        "critical_infrastructure": "NH-217 Tura-Dalu Route",
+        "soil_type": "Archaean Gneiss Complex"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [90.185, 25.485],
+            [90.255, 25.492],
+            [90.268, 25.555],
+            [90.178, 25.548],
+            [90.185, 25.485]
+          ]
+        ]
+      }
+    }
+  ]
+}

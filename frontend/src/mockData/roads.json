@@ -1,0 +1,47 @@
+[
+  {
+    "road_id": "NH-40",
+    "name": "Jorabat – Shillong Expressway (GS Road)",
+    "status": "blocked",
+    "blockage_reason": "Active debris flow & mudslide near Umiam Bridge cut-slope (Km 62)",
+    "last_updated": "8 mins ago",
+    "affected_zone": "Z-SHL-01",
+    "traffic_diversion": "Diverted via Umroi Airport Link"
+  },
+  {
+    "road_id": "NH-6",
+    "name": "Shillong – Jowai – Silchar (Asian Highway 1)",
+    "status": "at_risk",
+    "blockage_reason": "Severe pore water pressure & rock detachment on Sonapur tunnel bypass",
+    "last_updated": "22 mins ago",
+    "affected_zone": "Z-JOW-04",
+    "traffic_diversion": "Heavy vehicles restricted to single lane"
+  },
+  {
+    "road_id": "SH-5",
+    "name": "Cherrapunji – Shella Border Highway",
+    "status": "open",
+    "blockage_reason": null,
+    "last_updated": "45 mins ago",
+    "affected_zone": "Z-CHR-02",
+    "traffic_diversion": "None (Clear Passage)"
+  },
+  {
+    "road_id": "NH-106",
+    "name": "Shillong – Mairang – Nongstoin Highway",
+    "status": "at_risk",
+    "blockage_reason": "Minor boulder detachment observed near Mairang slope-cut",
+    "last_updated": "1 hour ago",
+    "affected_zone": "Z-MAW-03",
+    "traffic_diversion": "Caution advised at Km 34"
+  },
+  {
+    "road_id": "NH-206",
+    "name": "Jowai – Amlarem – Dawki Border Link",
+    "status": "open",
+    "blockage_reason": null,
+    "last_updated": "2 hours ago",
+    "affected_zone": "Z-JOW-04",
+    "traffic_diversion": "None"
+  }
+]
