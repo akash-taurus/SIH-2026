@@ -1,0 +1,51 @@
+{
+  "NH-40": {
+    "description": "Jorabat - Nongpoh - Umiam - Shillong",
+    "coordinates": [
+      [25.9350, 91.8988],
+      [25.9011, 91.8812],
+      [25.7455, 91.8890],
+      [25.6690, 91.8977],
+      [25.6120, 91.8951],
+      [25.5788, 91.8933]
+    ]
+  },
+  "NH-6": {
+    "description": "Shillong - Pynursla - Jowai - Silchar (Asian Highway 1)",
+    "coordinates": [
+      [25.5788, 91.8933],
+      [25.4790, 91.9720],
+      [25.4498, 92.0680],
+      [25.4412, 92.2033],
+      [25.2700, 92.5200],
+      [25.0500, 92.7800]
+    ]
+  },
+  "SH-5": {
+    "description": "Cherrapunji - Shella - Dawki Border",
+    "coordinates": [
+      [25.2711, 91.7312],
+      [25.2280, 91.7850],
+      [25.1930, 91.8420],
+      [25.1667, 91.8500]
+    ]
+  },
+  "NH-106": {
+    "description": "Shillong - Mairang - Nongstoin",
+    "coordinates": [
+      [25.5788, 91.8933],
+      [25.5610, 91.7650],
+      [25.5333, 91.6333],
+      [25.5167, 91.2667]
+    ]
+  },
+  "NH-206": {
+    "description": "Jowai - Amlarem - Dawki Border Link",
+    "coordinates": [
+      [25.4412, 92.2033],
+      [25.3800, 92.1600],
+      [25.3333, 92.1500],
+      [25.1833, 92.0167]
+    ]
+  }
+}
