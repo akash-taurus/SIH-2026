@@ -47,7 +47,8 @@ export default function WeatherChart({
   language = 'en',
   selectedZone = null,
   onZoneChange = null,
-  onRefresh = null
+  onRefresh = null,
+  caineThreshold = 35.0
 }) {
   const t = translations[language] || translations.en;
   const [isSimulating, setIsSimulating] = useState(getSimulationState());
@@ -85,7 +86,7 @@ export default function WeatherChart({
             )}
           </div>
           <p className="text-xs text-gray-500 font-mono">
-            {activeZoneMeta.name} ({activeZoneMeta.lat.toFixed(2)}°N, {activeZoneMeta.lon.toFixed(2)}°E) • Caine $I\text{--}D$ Threshold
+            {activeZoneMeta.name} ({activeZoneMeta.lat.toFixed(2)}°N, {activeZoneMeta.lon.toFixed(2)}°E) • Caine I-D Threshold
           </p>
         </div>
 
@@ -108,7 +109,7 @@ export default function WeatherChart({
       {/* Geotechnical & Early Warning Lead-Time Metric Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4 bg-gray-50 p-2.5 border border-gray-300 text-xs">
         <div>
-          <span className="text-gray-500 block text-[10px] uppercase font-semibold">Peak Intensity</span>
+          <span className="text-gray-500 block text-[10px] uppercase font-semibold">Peak Rain Rate</span>
           <span className="text-sm font-black text-black tabular-nums">{peakRainfall.toFixed(1)} mm/h</span>
         </div>
         <div>
@@ -123,11 +124,11 @@ export default function WeatherChart({
           <span className="text-gray-500 block text-[10px] uppercase font-semibold">Physics Early Warning</span>
           {firstBreach ? (
             <span className="text-xs font-bold text-black bg-gray-200 px-1.5 py-0.5 inline-block mt-0.5 font-mono">
-              ⚡ Breach in +{breachLeadTimeHours}h
+              {peakRainfall >= caineThreshold ? 'Threshold Breached' : '⚡ Breach in +' + breachLeadTimeHours + 'h'}
             </span>
           ) : (
             <span className="text-xs font-bold text-black inline-block mt-0.5">
-              ✓ Slope Stable
+              {peakRainfall >= caineThreshold ? 'Threshold Breached' : 'Below Critical'}
             </span>
           )}
         </div>
