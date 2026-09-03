@@ -64,6 +64,13 @@ export const translations = {
     verified_badge: "Verified Field Observation",
     no_reports: "No community reports submitted in the current monitoring window.",
 
+    map_legend_title: "Legend",
+    map_layer_zones: "Hazard Zones",
+    map_layer_roads: "Roads",
+    map_layer_settlements: "Settlements",
+    map_layer_rainfall: "Rainfall (24h)",
+    map_loading: "Loading hazard zones\u2026",
+
     active_critical_alert: "CRITICAL HAZARD WARNING",
     alert_action: "Follow Disaster Management Protocols Immediately."
   },
@@ -130,6 +137,13 @@ export const translations = {
     timestamp: "समय",
     verified_badge: "सत्यापित मैदानी अवलोकन",
     no_reports: "वर्तमान निगरानी विंडो में कोई रिपोर्ट नहीं मिली।",
+
+    map_legend_title: "सूचक",
+    map_layer_zones: "जोखिम क्षेत्र",
+    map_layer_roads: "सड़कें",
+    map_layer_settlements: "बस्तियां",
+    map_layer_rainfall: "वर्षा (24 घंटे)",
+    map_loading: "जोखिम क्षेत्र लोड हो रहे हैं…",
 
     active_critical_alert: "गंभीर भूस्खलन चेतावनी",
     alert_action: "आपदा प्रबंधन प्रोटोकॉल का तुरंत पालन करें।"
@@ -198,6 +212,13 @@ export const translations = {
     verified_badge: "প্ৰমাণিত মাটিকেন্দ্রীক তথ্য",
     no_reports: "বৰ্তমান সময়ত কোনো নতুন তথ্য দাখিল হোৱা নাই।",
 
+    map_legend_title: "চিনাক্ত তালিকা",
+    map_layer_zones: "বিপদ অঞ্চল",
+    map_layer_roads: "পথসমূহ",
+    map_layer_settlements: "জনবসতি",
+    map_layer_rainfall: "বৰষুণ (24 ঘণ্টা)",
+    map_loading: "বিপদ অঞ্চল ল\u200cড হৈ আছে…",
+
     active_critical_alert: "চৰম ভূমিস্খলন বিপদ সতর্কবাণী",
     alert_action: "আপদকালীন প্ৰটোকল তাৎক্ষণিকভাৱে পালন কৰক।"
   },
@@ -265,6 +286,13 @@ export const translations = {
     verified_badge: "Kaiphod ba la pynskhem",
     no_reports: "Ym don kaiphod thymmai ha kane ka por.",
 
+    map_legend_title: "Ka Jingpynkut",
+    map_layer_zones: "Ki Thain Jingma",
+    map_layer_roads: "Ki Lynti",
+    map_layer_settlements: "Ki Shnong",
+    map_layer_rainfall: "U Slap (24 Kynta)",
+    map_loading: "Dang shim ki Thain Jingma\u2026",
+
     active_critical_alert: "JINGMAH BA KHRAW EH IA KA JING-TWA",
     alert_action: "Bud ia ki Hukum Disaster Management mar-mar."
   },
@@ -331,6 +359,13 @@ export const translations = {
     timestamp: "Sal / Somoi",
     verified_badge: "Bebegipa Kobor",
     no_reports: "Da·alo maming gital kobor dongkuja.",
+
+    map_legend_title: "Nisanirang",
+    map_layer_zones: "Kenanirang Biap",
+    map_layer_roads: "Sorokrang",
+    map_layer_settlements: "Songrang",
+    map_layer_rainfall: "Mikka (24 Kynta)",
+    map_loading: "Kenanirang Biap load ka·enga\u2026",
 
     active_critical_alert: "BILONGGIPA A·A BEANI KENANI",
     alert_action: "Disaster Management-ni bidingo kam ka·pabo."
