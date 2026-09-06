@@ -1,7 +1,11 @@
 [
   {
+    "settlement_id": "SET-MAW-01",
     "village": "Mawsynram Valley Sector",
+    "name": "Mawsynram Valley Sector",
     "district": "East Khasi Hills",
+    "lat": 25.2988,
+    "lon": 91.5822,
     "population": 1337,
     "risk_level": "severe",
     "distance_km": 3.4,
@@ -10,8 +14,12 @@
     "evacuation_status": "Immediate Evacuation Alert"
   },
   {
+    "settlement_id": "SET-CHR-02",
     "village": "Cherrapunji (Sohra Rim)",
+    "name": "Cherrapunji (Sohra Rim)",
     "district": "East Khasi Hills",
+    "lat": 25.2711,
+    "lon": 91.7312,
     "population": 2450,
     "risk_level": "high",
     "distance_km": 5.8,
@@ -20,8 +28,12 @@
     "evacuation_status": "Stage 2 Standby Alert"
   },
   {
+    "settlement_id": "SET-LAIT-03",
     "village": "Laitlyngkot Slope Dwellings",
+    "name": "Laitlyngkot Slope Dwellings",
     "district": "East Khasi Hills",
+    "lat": 25.4350,
+    "lon": 91.8380,
     "population": 1480,
     "risk_level": "high",
     "distance_km": 8.5,
@@ -30,8 +42,12 @@
     "evacuation_status": "Stage 1 Advisory"
   },
   {
+    "settlement_id": "SET-IAL-04",
     "village": "Ialong Cut-Slope Hamlet",
+    "name": "Ialong Cut-Slope Hamlet",
     "district": "West Jaintia Hills",
+    "lat": 25.4620,
+    "lon": 92.2210,
     "population": 1820,
     "risk_level": "moderate",
     "distance_km": 4.2,
@@ -40,8 +56,12 @@
     "evacuation_status": "Watch & Monitor"
   },
   {
+    "settlement_id": "SET-NONG-05",
     "village": "Nongpoh Valley Corridor",
+    "name": "Nongpoh Valley Corridor",
     "district": "Ri-Bhoi",
+    "lat": 25.9011,
+    "lon": 91.8812,
     "population": 17055,
     "risk_level": "low",
     "distance_km": 1.5,

@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root {
+  /* Surfaces & Backgrounds */
+  --bg: #FFFFFF;
+  --surface: #F5F5F5;
+  --surface-subtle: #FAFAFA;
+  --border: #000000;
+  --border-subtle: #E0E0E0;
+  
+  /* Text Contrast Hierarchy */
+  --text-primary: #000000;
+  --text-secondary: #444444;
+  --text-muted: #777777;
+  
+  /* Heatmap Color Scale (Green -> Yellow -> Orange -> Red) */
+  --risk-low: #22C55E;        /* Vibrant Emerald Green */
+  --risk-moderate: #EAB308;   /* Warm Golden Yellow */
+  --risk-high: #F97316;       /* Bright Vivid Orange */
+  --risk-severe: #EF4444;     /* Critical Crimson Red */
+  
+  /* Interactive States */
+  --hover-bg: #111111;
+  --focus-ring: #000000;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tabular numbers for rapid emergency decision making */
+.tabular-nums, table, .font-mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Crisp Clean Cartographic Basemap */
+.leaflet-tile-pane {
+  filter: contrast(105%) brightness(98%);
+}
+
+.leaflet-container {
+  font-family: 'Inter', sans-serif !important;
+  background-color: #f0f0f0 !important;
+}
+
+.leaflet-popup-content-wrapper {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  padding: 0 !important;
+}
+
+.leaflet-popup-content {
+  margin: 8px 12px !important;
+  line-height: 1.4 !important;
+}
+
+.leaflet-popup-tip {
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+/* Utility classes */
+.border-contrast {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.card-contrast {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.btn-contrast-black {
+  background-color: #111827;
+  color: #ffffff;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-contrast-black:hover {
+  background-color: #374151;
+}
+
+.btn-contrast-white {
+  background-color: #ffffff;
+  color: #111827;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-contrast-white:hover {
+  background-color: #f3f4f6;
+}

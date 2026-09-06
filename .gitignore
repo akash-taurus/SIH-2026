@@ -1,0 +1,55 @@
+﻿# Dependencies
+node_modules/
+*/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python & Virtual Environments
+venv/
+*/venv/
+env/
+*/env/
+ENV/
+__pycache__/
+*/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+*/.pytest_cache/
+
+# Environment Variables & Secrets
+.env
+*/.env
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+!.env.example
+!*/.env.example
+
+# Production Builds
+build/
+*/build/
+dist/
+*/dist/
+
+# Test Audio Artifacts
+*.mp3
+backend/*.mp3
+
+# OS & Editor Files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Coverage and Testing
+coverage/
+*.lcov
+.coverage
+.coverage.*
+htmlcov/

@@ -1,295 +1,255 @@
-// frontend/src/contexts/AppContext.jsx
-//
-// Global application state for NER-LEWS.
-// Owns: language selection, selected hazard zone, all fetched dashboard data
-// (risk zones, roads, settlements, emergency list, weather, citizen reports),
-// map layer visibility toggles, and the citizen "Report Hazard" modal flow.
-//
-// Every component (MapView, WeatherChart, RoadTable, EmergencyPrioritizationCard,
-// ReportModal, RecentReportsTable, Navbar, AlertBanner ...) should read/write
-// state through useAppContext() instead of fetching data or holding it locally,
-// so the whole dashboard stays in sync (e.g. selecting a zone on the map updates
-// the weather chart and the alert banner at the same time).
-
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState
-} from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import {
   fetchRiskZones,
   fetchRiskSummary,
+  fetchWeatherForecast,
   fetchRoads,
   fetchEmergencyList,
-  fetchWeatherForecast,
   fetchRecentReports,
   submitHazardReport,
-  toggleCloudburstSimulation,
-  getSimulationState,
   ZONE_COORDINATES
 } from '../services/api';
-import settlementsData from '../mockData/settlements.json';
-import roadPathsData from '../mockData/roadPaths.json';
+import {
+  getQueuedCount,
+  flushQueue,
+  subscribeToQueue
+} from '../services/offlineQueue';
 
-const AppContext = createContext(null);
-
-const DEFAULT_ZONE_ID = 'Z-SHL-01';
-
-/** Computes a rough centroid for a GeoJSON Polygon's outer ring. */
-function getPolygonCentroid(coordinates) {
-  const ring = coordinates?.[0] || [];
-  if (ring.length === 0) return null;
-  let sumLat = 0;
-  let sumLon = 0;
-  ring.forEach(([lon, lat]) => {
-    sumLat += lat;
-    sumLon += lon;
-  });
-  return { lat: sumLat / ring.length, lon: sumLon / ring.length };
-}
+const AppContext = createContext();
 
 export function AppProvider({ children }) {
-  // ---- Localization -------------------------------------------------
   const [language, setLanguage] = useState('en');
+  const [selectedZone, setSelectedZone] = useState({
+    zone_id: 'Z-SHL-01',
+    name: 'Shillong East Ridge & Upper Shillong',
+    district: 'East Khasi Hills',
+    risk_level: 'severe',
+    probability: 0.88,
+    mean_slope_deg: 38.4,
+    lat: 25.5788,
+    lon: 91.8933,
+    criticalRainThreshold: 35.0
+  });
 
-  // ---- Selected hazard zone (drives map highlight + weather chart) --
-  const [selectedZone, setSelectedZoneState] = useState(null);
-
-  // ---- Server / mock data --------------------------------------------
-  const [riskZonesGeoJSON, setRiskZonesGeoJSON] = useState(null);
+  const [riskZones, setRiskZones] = useState(null);
   const [riskSummary, setRiskSummary] = useState([]);
   const [roads, setRoads] = useState([]);
-  const [emergencyList, setEmergencyList] = useState([]);
+  const [settlements, setSettlements] = useState([]);
   const [weatherData, setWeatherData] = useState([]);
   const [reports, setReports] = useState([]);
-  const [settlements] = useState(settlementsData);
-
-  const [loading, setLoading] = useState({
-    zones: true,
-    roads: true,
-    emergency: true,
-    weather: true,
-    reports: true
-  });
-  const [error, setError] = useState({});
-
-  // ---- Map layer visibility toggles ----------------------------------
-  const [layers, setLayers] = useState({
-    hazardZones: true,
-    roads: true,
-    settlements: true,
-    rainfall: false
-  });
-
-  // ---- Citizen "Report Hazard" modal ----------------------------------
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
-  const [isSimulating, setIsSimulating] = useState(getSimulationState());
+  const [loading, setLoading] = useState(true);
 
-  const setError1 = useCallback((key, value) => {
-    setError((prev) => ({ ...prev, [key]: value }));
-  }, []);
+  // Milestone 3 Offline-First Field Hazard Reporting Synchronization State
+  const [queuedReportsCount, setQueuedReportsCount] = useState(() => {
+    try {
+      return getQueuedCount();
+    } catch {
+      return 0;
+    }
+  });
+  const [isOnline, setIsOnline] = useState(() => {
+    return typeof navigator !== 'undefined' ? navigator.onLine : true;
+  });
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncToast, setSyncToast] = useState(null);
 
-  // ---- Initial data load (zones, summary, roads, emergency, reports) -
+  // Load all initial state
+  const loadData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const [zonesData, summaryData, roadsData, emergencyData, reportsData] = await Promise.all([
+        fetchRiskZones(),
+        fetchRiskSummary(),
+        fetchRoads(),
+        fetchEmergencyList(),
+        fetchRecentReports()
+      ]);
+
+      setRiskZones(zonesData);
+      setRiskSummary(summaryData);
+      setRoads(roadsData);
+      setSettlements(emergencyData);
+      setReports(reportsData);
+
+      const zoneMeta = ZONE_COORDINATES[selectedZone?.zone_id || 'Z-SHL-01'] || { lat: 25.5788, lon: 91.8933 };
+      const weather = await fetchWeatherForecast(zoneMeta.lat, zoneMeta.lon, selectedZone?.zone_id || 'Z-SHL-01');
+      setWeatherData(weather);
+    } catch (err) {
+      console.error('[AppContext] Failed to load data:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedZone?.zone_id]);
+
   useEffect(() => {
-    let isMounted = true;
+    loadData();
+  }, [loadData]);
 
-    (async () => {
-      try {
-        const zones = await fetchRiskZones();
-        if (isMounted) setRiskZonesGeoJSON(zones);
-      } catch (err) {
-        if (isMounted) setError1('zones', err.message);
-      } finally {
-        if (isMounted) setLoading((l) => ({ ...l, zones: false }));
-      }
+  // Synchronize pending offline reports to backend API
+  const syncPendingReports = useCallback(async () => {
+    if (isSyncing) return null;
+    setIsSyncing(true);
+    try {
+      const summary = await flushQueue(async () => {
+        try {
+          const freshReports = await fetchRecentReports();
+          setReports(freshReports);
+        } catch {
+          // ignore
+        }
+      });
 
-      try {
-        const summary = await fetchRiskSummary();
-        if (isMounted) setRiskSummary(summary);
-      } catch (err) {
-        if (isMounted) setError1('summary', err.message);
+      if (summary && summary.synced > 0) {
+        setSyncToast({
+          message: `Successfully synchronized ${summary.synced} offline report${summary.synced > 1 ? 's' : ''} to central command.`,
+          type: 'success'
+        });
+        setTimeout(() => setSyncToast(null), 5000);
+        try {
+          const freshReports = await fetchRecentReports();
+          setReports(freshReports);
+        } catch {
+          // ignore
+        }
       }
+      return summary;
+    } catch (err) {
+      console.warn('[AppContext] Failed to sync offline reports:', err);
+      return null;
+    } finally {
+      setIsSyncing(false);
+    }
+  }, [isSyncing]);
 
-      try {
-        const roadsData = await fetchRoads();
-        if (isMounted) setRoads(roadsData);
-      } catch (err) {
-        if (isMounted) setError1('roads', err.message);
-      } finally {
-        if (isMounted) setLoading((l) => ({ ...l, roads: false }));
-      }
+  // Listen to network transitions & offline queue mutations
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+      console.log('[AppContext] Network restored. Triggering auto-sync...');
+      syncPendingReports();
+    };
 
-      try {
-        const emergency = await fetchEmergencyList();
-        if (isMounted) setEmergencyList(emergency);
-      } catch (err) {
-        if (isMounted) setError1('emergency', err.message);
-      } finally {
-        if (isMounted) setLoading((l) => ({ ...l, emergency: false }));
-      }
+    const handleOffline = () => {
+      setIsOnline(false);
+      console.log('[AppContext] Network severed. Operating in offline mode.');
+    };
 
-      try {
-        const recentReports = await fetchRecentReports();
-        if (isMounted) setReports(recentReports);
-      } catch (err) {
-        if (isMounted) setError1('reports', err.message);
-      } finally {
-        if (isMounted) setLoading((l) => ({ ...l, reports: false }));
-      }
-    })();
+    if (typeof window !== 'undefined') {
+      window.addEventListener('online', handleOnline);
+      window.addEventListener('offline', handleOffline);
+    }
+
+    const unsubQueue = subscribeToQueue(({ count }) => {
+      setQueuedReportsCount(count);
+    });
 
     return () => {
-      isMounted = false;
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('online', handleOnline);
+        window.removeEventListener('offline', handleOffline);
+      }
+      unsubQueue();
     };
-  }, [setError1]);
+  }, [syncPendingReports]);
 
-  // ---- Weather forecast: refetch whenever the selected zone changes --
-  const refreshWeather = useCallback(async (zoneOverride) => {
-    const targetZone = zoneOverride || selectedZone;
-    const zoneId = targetZone?.zone_id || DEFAULT_ZONE_ID;
-    const coords = ZONE_COORDINATES[zoneId] || ZONE_COORDINATES[DEFAULT_ZONE_ID];
+  // Handle zone selection change
+  const handleSelectZone = async (zoneProps) => {
+    const zoneId = zoneProps.zone_id || 'Z-SHL-01';
+    const meta = ZONE_COORDINATES[zoneId] || { lat: 25.5788, lon: 91.8933, criticalRainThreshold: 35.0 };
+    const fullZone = {
+      ...zoneProps,
+      lat: meta.lat,
+      lon: meta.lon,
+      criticalRainThreshold: meta.criticalRainThreshold
+    };
+    setSelectedZone(fullZone);
 
-    setLoading((l) => ({ ...l, weather: true }));
     try {
-      const forecast = await fetchWeatherForecast(coords.lat, coords.lon, zoneId);
-      setWeatherData(forecast);
-    } catch (err) {
-      setError1('weather', err.message);
-    } finally {
-      setLoading((l) => ({ ...l, weather: false }));
+      const weather = await fetchWeatherForecast(meta.lat, meta.lon, zoneId);
+      setWeatherData(weather);
+    } catch (e) {
+      console.warn('Weather refresh failed:', e);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedZone]);
+  };
 
-  useEffect(() => {
-    refreshWeather();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedZone]);
+  // Handle report submission
+  const handleSubmitReport = async (reportData) => {
+    const res = await submitHazardReport(reportData);
+    if (res && res.success) {
+      const updatedReports = await fetchRecentReports();
+      setReports(updatedReports);
+    }
+    return res;
+  };
 
-  const setSelectedZone = useCallback((zoneProperties) => {
-    setSelectedZoneState(zoneProperties);
-  }, []);
+  const handleRefreshWeather = async () => {
+    const meta = ZONE_COORDINATES[selectedZone?.zone_id || 'Z-SHL-01'] || { lat: 25.5788, lon: 91.8933 };
+    const weather = await fetchWeatherForecast(meta.lat, meta.lon, selectedZone?.zone_id || 'Z-SHL-01');
+    setWeatherData(weather);
+  };
 
-  const toggleSimulation = useCallback((enable) => {
-    const next = toggleCloudburstSimulation(enable);
-    setIsSimulating(next);
-    refreshWeather();
-    return next;
-  }, [refreshWeather]);
-
-  // ---- Map layer toggles -----------------------------------------------
-  const toggleLayer = useCallback((key) => {
-    setLayers((prev) => ({ ...prev, [key]: !prev[key] }));
-  }, []);
-
-  // ---- Citizen report modal flow ---------------------------------------
-  const openReportModal = useCallback(() => setIsReportModalOpen(true), []);
-  const closeReportModal = useCallback(() => setIsReportModalOpen(false), []);
-
-  const handleSubmitReport = useCallback(async (reportData) => {
-    const result = await submitHazardReport(reportData);
-    const updatedReports = await fetchRecentReports();
-    setReports(updatedReports);
-    setIsReportModalOpen(false);
-    return result;
-  }, []);
-
-  // ---- Derived data: zone centroids (for rainfall layer / popups) -----
-  const zoneCentroids = useMemo(() => {
-    const features = riskZonesGeoJSON?.features || [];
-    return features
-      .map((feature) => {
-        const centroid = getPolygonCentroid(feature.geometry?.coordinates);
-        if (!centroid) return null;
-        return { ...feature.properties, ...centroid };
-      })
-      .filter(Boolean);
-  }, [riskZonesGeoJSON]);
-
-  // ---- Derived data: roads merged with GIS polyline geometry -----------
-  const roadsWithGeometry = useMemo(() => {
-    return roads.map((road) => ({
-      ...road,
-      path: roadPathsData[road.road_id]?.coordinates || null
-    }));
-  }, [roads]);
-
-  const value = useMemo(() => ({
-    // localization
+  const value = {
     language,
     setLanguage,
-
-    // selection
     selectedZone,
-    setSelectedZone,
-
-    // raw + derived data
-    riskZonesGeoJSON,
+    setSelectedZone: handleSelectZone,
+    riskZones,
     riskSummary,
     roads,
-    roadsWithGeometry,
     settlements,
-    emergencyList,
     weatherData,
     reports,
-    zoneCentroids,
-
-    // status
     loading,
-    error,
-
-    // map layers
-    layers,
-    toggleLayer,
-
-    // weather / simulation
-    refreshWeather,
-    isSimulating,
-    toggleSimulation,
-
-    // citizen reports
     isReportModalOpen,
-    openReportModal,
-    closeReportModal,
-    handleSubmitReport
-  }), [
-    language,
-    selectedZone,
-    setSelectedZone,
-    riskZonesGeoJSON,
-    riskSummary,
-    roads,
-    roadsWithGeometry,
-    settlements,
-    emergencyList,
-    weatherData,
-    reports,
-    zoneCentroids,
-    loading,
-    error,
-    layers,
-    toggleLayer,
-    refreshWeather,
-    isSimulating,
-    toggleSimulation,
-    isReportModalOpen,
-    openReportModal,
-    closeReportModal,
-    handleSubmitReport
-  ]);
+    setIsReportModalOpen,
+    submitReport: handleSubmitReport,
+    refreshWeather: handleRefreshWeather,
+    refreshAll: loadData,
+    state: { language, selectedZone },
+    // Milestone 3 Offline-First Field Hazard Reporting Synchronization Contracts
+    queuedReportsCount,
+    queuedCount: queuedReportsCount,
+    isOnline,
+    isSyncing,
+    syncToast,
+    setSyncToast,
+    syncPendingReports,
+    syncOfflineReports: syncPendingReports
+  };
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider value={value}>
+      {children}
+      {/* Dynamic Sync Confirmation Toast */}
+      {syncToast && (
+        <div
+          role="status"
+          aria-live="polite"
+          data-testid="sync-confirmation-toast"
+          className="fixed bottom-4 right-4 z-50 p-3 bg-emerald-800 text-white font-mono text-xs border-2 border-black shadow-2xl flex items-center gap-2 animate-in fade-in"
+        >
+          <span className="text-base">✅</span>
+          <span className="flex-1 font-semibold">{syncToast.message}</span>
+          <button
+            type="button"
+            onClick={() => setSyncToast(null)}
+            className="text-white hover:text-gray-200 font-bold ml-2 cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+    </AppContext.Provider>
+  );
 }
 
-export function useAppContext() {
-  const ctx = useContext(AppContext);
-  if (!ctx) {
-    throw new Error('useAppContext must be used within an <AppProvider>');
+export function useAppState() {
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error('useAppState must be used within an AppProvider');
   }
-  return ctx;
+  return context;
 }
 
 export default AppContext;

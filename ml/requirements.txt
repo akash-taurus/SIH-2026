@@ -1,0 +1,14 @@
+pandas
+numpy
+scikit-learn
+xgboost
+shap
+fastapi
+uvicorn[standard]
+joblib
+pydantic
+python-multipart
+SQLAlchemy
+psycopg[binary]
+httpx
+requests
